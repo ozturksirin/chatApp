@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
         gap: 4,
         marginVertical: 4,
         alignSelf: 'flex-start',
+        maxWidth: '80%',
     },
     text: {
         color: '#F7F7FC',
