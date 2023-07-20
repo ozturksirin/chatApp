@@ -5,14 +5,52 @@ import Plus from '../../Assets/Images/icons/plus.png'
 import Send from '../../Assets/Images/icons/send.png'
 import messaging from '@react-native-firebase/messaging';
 import { GiftedChat } from 'react-native-gifted-chat'
-
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 
 const Chat = () => {
+    const [messages, setMessages] = useState([])
+
+    useEffect(() => {
+        setMessages([
+            {
+                _id: 1,
+                text: 'Hello developer...',
+                createdAt: new Date().getTime(),
+                user: {
+                    _id: 2,
+                    name: 'React Native',
+                },
+            },
+        ])
+    }, [])
+
+    const onSend = async (msgArr) => {
+
+    };
+
+    useEffect(() => {
+        // const newCollectionRef = firestore().collection("test")
+        // newCollectionRef.add({
+        //     text: "test",
+        //     createdAt: new Date().getTime(),
+        // })
+    }, [])
     return (
         <View style={styles.container}>
 
             <View style={{ flex: 10, paddingHorizontal: 6 }}>
+
+                <GiftedChat
+                    messages={messages}
+                    onSend={onSend}
+                    user={{
+                        _id: auth?.currentUser?.email,
+                        name: auth?.currentUser?.email,
+                        // avatar: auth?.currentUser?.photoURL
+                    }}
+                />
 
                 {/* <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 10 }}>
                     <Text style={{ color: '#ADB5BD', fontFamily: 'Lato', fontSize: 11, fontStyle: 'normal', fontWeight: '400', lineHeight: 16 }}>Today</Text>
@@ -32,15 +70,6 @@ const Chat = () => {
                     <Text style={styles.text}>lorem ipsum dolor sit amet</Text>
                     <Text style={styles.time}>14:29</Text>
                 </View> */}
-
-                {/* <GiftedChat
-                    messages={messages}
-                    onSend={text => onSend(text)}
-                    user={{
-                        _id: user.uid,
-                    }}
-                /> */}
-
             </View>
             {/* <View style={styles.inputArea}>
                 <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 4 }}>

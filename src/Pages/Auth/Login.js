@@ -19,11 +19,11 @@ const Login = (props) => {
     const login = async () => {
         try {
             await auth().signInWithEmailAndPassword(email, password);
-            navigation.navigate('Chat')
+            navigation.navigate('Contacts')
             console.log('signed in!');
             await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
-
-        } catch (e) {
+        }
+        catch (e) {
             Alert.alert('Error', e.message)
         }
     }
@@ -33,9 +33,10 @@ const Login = (props) => {
             if (user_val != null) {
                 const user = JSON.parse(user_val);
                 dispatch(save(user));
-                navigation.navigate('Chat');
+                navigation.navigate('Contacts');
             }
-        } catch (e) {
+        }
+        catch (e) {
             console.log(e);
         }
     };

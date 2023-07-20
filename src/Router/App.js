@@ -5,6 +5,8 @@ import Chat from '../Pages/Chat/Chat';
 import Login from '../Pages/Auth/Login';
 import { store } from '../Redux/store';
 import { Provider } from 'react-redux';
+import Contacts from '../Pages/Contacts/Contacts';
+import ProfileCreate from '../Pages/Profile/ProfileCreate';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +17,8 @@ const Router = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Login'>
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
+          <Stack.Screen name="Contacts" component={Contacts} />
           <Stack.Screen name="Chat" component={Chat} />
         </Stack.Navigator>
       </NavigationContainer>
