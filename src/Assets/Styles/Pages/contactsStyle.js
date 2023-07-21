@@ -28,4 +28,9 @@ export const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 1,
     },
+    userImg: {
+        width: 50,
+        height: 50,
+        borderRadius: 10
+    },
 });

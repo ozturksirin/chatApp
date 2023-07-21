@@ -6,6 +6,9 @@ import ButtonModel from '../../Components/ButtonModel'
 import uploadImg from '../../Assets/Images/uploadImg.png'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+
+
 
 const ProfileCreate = (props) => {
     const { navigation } = props
@@ -59,39 +62,59 @@ const ProfileCreate = (props) => {
         );
     };
 
-    const save = async () => {
-        const newCollectionRef = firestore().collection("users")
+    const saveProfile = async () => {
         if (!image) {
-            Alert.alert('Error', 'Please select an image')
+            Alert.alert('Error', 'Please select an image');
+            return;
         }
         if (!firstName) {
-            Alert.alert('Error', 'Please enter first name')
+            Alert.alert('Error', 'Please enter first name');
+            return;
         }
         if (!lastName) {
-            Alert.alert('Error', 'Please enter last name')
+            Alert.alert('Error', 'Please enter last name');
+            return;
         }
-        else {
-            newCollectionRef.add({
-                image,
-                firstName,
-                lastName,
-                createdAt: new Date().getTime(),
-            })
-            // Alert.alert('Success', 'Profile created successfully')
+
+        try {
+            const imageUrl = await uploadImage();
+            await saveToFirestore(imageUrl);
             Alert.alert(
                 'Success',
                 'Profile created successfully',
                 [
                     {
                         text: 'OK',
-                        onPress: () => { navigation.navigate('Contacts') }
-                    }
+                        onPress: () => navigation.navigate('Contacts'),
+                    },
                 ]
-            )
-            setFirstName('')
-            setLastName('')
-            setImage(null)
+            );
+            setFirstName('');
+            setLastName('');
+            setImage(null);
         }
+        catch (error) {
+            console.error('Error while saving profile:', error);
+            Alert.alert('Error', 'An error occurred while saving the profile.');
+        }
+    };
+
+    const uploadImage = async () => {
+        const reference = storage().ref(`users/${image.split('/').pop()}`);
+        const taskSnapshot = await reference.putFile(image);
+        const imageUrl = await reference.getDownloadURL();
+        console.log('Image uploaded and URL:', imageUrl);
+        return imageUrl;
+    };
+
+    const saveToFirestore = async (imageUrl) => {
+        const newCollectionRef = firestore().collection('users');
+        await newCollectionRef.add({
+            image: imageUrl,
+            firstName: firstName,
+            lastName: lastName,
+            createdAt: new Date().getTime(),
+        });
     };
 
     return (
@@ -111,7 +134,7 @@ const ProfileCreate = (props) => {
                 <InputModel placeholder='Last Name (Required)' value={lastName} onChangeText={setLastName} />
             </View>
             <View style={styles.btnArea}>
-                <ButtonModel title='Save' onPress={save} />
+                <ButtonModel title='Save' onPress={saveProfile} />
             </View>
         </View>
     )

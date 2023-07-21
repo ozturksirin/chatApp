@@ -15,7 +15,7 @@ const Router = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Login'>
+        <Stack.Navigator initialRouteName='Contacts'>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
           <Stack.Screen name="Contacts" component={Contacts} />
