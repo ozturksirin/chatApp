@@ -45,13 +45,17 @@ const Login = (props) => {
         getUser();
     }, []);
 
+    const goRegister = () => {
+        navigation.navigate('Register')
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.area}>
                 <InputModel placeholder='Name' onChangeText={setEmail} keyboardType={'email-address'} />
                 <InputModel placeholder='Password' onChangeText={setPassword} />
 
-                <ButtonModel title='Login' onPress={login} />
+                <ButtonModel title='Login' onPress={login} subTitle={'Register'} onPressSub={goRegister} />
             </View>
 
         </View>

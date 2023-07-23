@@ -6,9 +6,10 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 6
     },
-    area: {
+    inputArea: {
         justifyContent: 'center',
         flex: 1,
-    }
+    },
 
-});
+
+})

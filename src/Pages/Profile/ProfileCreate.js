@@ -7,6 +7,7 @@ import uploadImg from '../../Assets/Images/uploadImg.png'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 
 
 
@@ -109,10 +110,12 @@ const ProfileCreate = (props) => {
 
     const saveToFirestore = async (imageUrl) => {
         const newCollectionRef = firestore().collection('users');
+        const authUserId = auth().currentUser.uid;
         await newCollectionRef.add({
-            image: imageUrl,
+            authUserId: authUserId,
             firstName: firstName,
             lastName: lastName,
+            image: imageUrl,
             createdAt: new Date().getTime(),
         });
     };

@@ -16,6 +16,9 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16,
         lineHeight: 28,
-    }
-
+    },
+    btnSecond: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

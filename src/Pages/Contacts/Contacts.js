@@ -27,7 +27,6 @@ const Contacts = (props) => {
 
     const goToChat = () => {
         navigation.navigate('Chat')
-
     }
 
     return (
@@ -37,7 +36,12 @@ const Contacts = (props) => {
                     users.map((item, index) => {
                         return (
                             <View key={index}>
-                                <TouchableOpacity style={styles.userArea} onPress={goToChat}>
+                                <TouchableOpacity style={styles.userArea} onPress={
+                                    () => {
+                                        navigation.navigate('Chat', { user: item.authUserId, })
+                                        console.log('authUserId', item.authUserId);
+                                    }
+                                }>
                                     <Image source={
                                         item.image ? { uri: item.image } : User
                                     } style={styles.userImg} />

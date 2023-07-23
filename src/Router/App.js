@@ -7,6 +7,8 @@ import { store } from '../Redux/store';
 import { Provider } from 'react-redux';
 import Contacts from '../Pages/Contacts/Contacts';
 import ProfileCreate from '../Pages/Profile/ProfileCreate';
+import Register from '../Pages/Auth/Register';
+import Menu from '../Pages/More/Menu';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +17,10 @@ const Router = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Contacts'>
+        <Stack.Navigator initialRouteName='Login'>
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name='Menu' component={Menu} />
           <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
           <Stack.Screen name="Contacts" component={Contacts} />
           <Stack.Screen name="Chat" component={Chat} />
