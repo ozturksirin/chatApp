@@ -45,7 +45,7 @@ const Contacts = (props) => {
                                     <Image source={
                                         item.image ? { uri: item.image } : User
                                     } style={styles.userImg} />
-                                    <View style={{ paddingLeft: 10, }}>
+                                    <View style={{ paddingLeft: 10, flex: 1 }}>
                                         <Text style={styles.name}>
                                             {item?.firstName + ' ' + item?.lastName}
                                         </Text>
