@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { styles } from '../../Assets/Styles/Pages/splashStyle'
 import { View, Image, Text } from 'react-native'
 import splash from '../../Assets/Images/splash.png'
 import { useDispatch } from 'react-redux'
-import { save } from '../../Redux/Slices/authSlice'
+import { save, authCheck } from '../../Redux/Slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Splash = (props) => {
     const { navigation } = props
-    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch();
 
     const getUser = async () => {
@@ -17,17 +16,23 @@ const Splash = (props) => {
             if (user_val != null) {
                 const user = JSON.parse(user_val);
                 dispatch(save(user));
+                dispatch(authCheck(true));
                 setTimeout(() => {
                     navigation.navigate('Contacts');
                 }, 3000);
             }
             else {
+                dispatch(save(null));
+                dispatch(authCheck(false));
                 setTimeout(() => {
                     navigation.navigate('Login')
                 }, 3000);
             }
         }
         catch (error) {
+            dispatch(save(null));
+            dispatch(authCheck(false));
+            navigation.navigate('Login');
             console.log(error);
         }
     }

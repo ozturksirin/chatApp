@@ -13,7 +13,7 @@ import help from '../../Assets/Images/icons/help.png'
 import invite from '../../Assets/Images/icons/invite.png'
 import logout from '../../Assets/Images/icons/logout.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { save } from '../../Redux/Slices/authSlice'
+import { save, authCheck } from '../../Redux/Slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from '@react-native-firebase/auth'
 const Menu = (props) => {
@@ -28,12 +28,12 @@ const Menu = (props) => {
         console.log('user', user);
     }, []);
 
-    const logOut = () => {
-
+    const logOut = async () => {
         try {
             auth().signOut();
             AsyncStorage.removeItem('USER');
             dispatch(save(null));
+            dispatch(authCheck(false));
             if (user) {
                 navigation.navigate('Login');
             }

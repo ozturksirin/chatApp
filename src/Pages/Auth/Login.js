@@ -6,7 +6,7 @@ import { styles } from '../../Assets/Styles/Pages/loginStyle'
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux'
-import { save } from '../../Redux/Slices/authSlice'
+import { save, authCheck } from '../../Redux/Slices/authSlice'
 
 
 const Login = (props) => {
@@ -18,43 +18,30 @@ const Login = (props) => {
 
     const login = async () => {
         try {
-            await auth().signInWithEmailAndPassword(email, password);
-            navigation.navigate('Contacts')
-            console.log('signed in!');
-            await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
+            if (email && password) {
+                await auth().signInWithEmailAndPassword(email, password);
+                await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
+                dispatch(authCheck(true));
+                navigation.navigate('Contacts')
+                console.log('signed in!');
+            }
+            else {
+                Alert.alert('Error', 'Please fill all inputs')
+            }
         }
         catch (e) {
             Alert.alert('Error', e.message)
         }
     }
-    const getUser = async () => {
-        try {
-            const user_val = await AsyncStorage.getItem('USER');
-            if (user_val != null) {
-                const user = JSON.parse(user_val);
-                dispatch(save(user));
-                navigation.navigate('Contacts');
-            }
-        }
-        catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        getUser();
-    }, []);
 
     const goRegister = () => {
         navigation.navigate('Register')
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.area}>
                 <InputModel placeholder='Name' onChangeText={setEmail} keyboardType={'email-address'} />
                 <InputModel placeholder='Password' onChangeText={setPassword} />
-
                 <ButtonModel title='Login' onPress={login} subTitle={'Register'} onPressSub={goRegister} />
             </View>
 
