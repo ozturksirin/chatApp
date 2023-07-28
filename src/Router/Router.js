@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Chat from '../Pages/Chat/Chat';
@@ -14,25 +14,34 @@ import Splash from '../Pages/Splash/Splash';
 import chats from '../Assets/Images/icons/chats.png'
 import accountTab from '../Assets/Images/icons/accountTab.png'
 import more from '../Assets/Images/icons/more.png'
-import { useDispatch, useSelector } from 'react-redux';
-import { authCheck } from '../Redux/Slices/authSlice';
+import { useSelector } from 'react-redux';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 const HomeStackScreen = () => {
+    const isAuth = useSelector((state) => state.user.isAuth);
+
     return (
         <Stack.Navigator initialRouteName='Splash'>
-            <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
-            <Stack.Screen name='Login' component={Login} />
-            <Stack.Screen name='Register' component={Register} />
-            <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
-            <Stack.Screen name='Chat' component={Chat} />
-
-            <Stack.Screen name="Contacts" component={Contacts} />
-            <Stack.Screen name="Messages" component={Messages} />
-            <Stack.Screen name='Menu' component={Menu} />
-
+            {
+                !isAuth ? (
+                    <>
+                        <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
+                        <Stack.Screen name='Login' component={Login} />
+                        <Stack.Screen name='Register' component={Register} />
+                        <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
+                    </>
+                ) :
+                    (
+                        <>
+                            <Stack.Screen name="Contacts" component={Contacts} />
+                            <Stack.Screen name='Chat' component={Chat} />
+                            <Stack.Screen name="Messages" component={Messages} />
+                            <Stack.Screen name='Menu' component={Menu} />
+                        </>
+                    )
+            }
         </Stack.Navigator>
     );
 }
