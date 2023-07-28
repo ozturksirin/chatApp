@@ -8,6 +8,8 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux'
 
 
 
@@ -16,6 +18,7 @@ const ProfileCreate = (props) => {
     const [image, setImage] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const dispatch = useDispatch();
 
     const openCamera = () => {
         launchCamera({

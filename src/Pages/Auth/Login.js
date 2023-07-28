@@ -20,7 +20,9 @@ const Login = (props) => {
         try {
             if (email && password) {
                 await auth().signInWithEmailAndPassword(email, password);
+                const UID = auth().currentUser.uid;
                 await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
+                dispatch(save({ email, password, UID }));
                 dispatch(authCheck(true));
                 navigation.navigate('Contacts')
                 console.log('signed in!');
