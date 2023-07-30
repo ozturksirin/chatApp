@@ -4,18 +4,12 @@ import { Provider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Router from './Router';
 
-
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-const Tab = createBottomTabNavigator();
-
 const App = () => {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Provider store={store}>
-          <Router Tab={Tab} />
+          <Router />
         </Provider>
       </GestureHandlerRootView>
     </>

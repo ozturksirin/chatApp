@@ -16,17 +16,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { save, authCheck } from '../../Redux/Slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from '@react-native-firebase/auth'
+import BottomBar from '../Layouts/BottomBar'
 const Menu = (props) => {
     const { navigation } = props
     const dispatch = useDispatch();
-
-
     const user = useSelector(state => state.user.user);
-
     useEffect(() => {
         console.log('user', user);
     }, []);
-
     const logOut = async () => {
         try {
             auth().signOut();
@@ -41,29 +38,34 @@ const Menu = (props) => {
             console.log(error);
         }
     }
-
+    const goToMessages = () => {
+        navigation.navigate('Messages');
+    }
     return (
-        <View style={styles.container}>
-            <View style={{ flexDirection: 'row', }}>
-                <Image source={User} style={styles.user} />
-                <View style={styles.textArea}>
-                    <Text style={styles.name}>Ozturk Sirin</Text>
-                    <Text style={styles.info}>{user?.email}</Text>
+        <>
+            <View style={styles.container}>
+                <View style={{ flexDirection: 'row', }}>
+                    <Image source={User} style={styles.user} />
+                    <View style={styles.textArea}>
+                        <Text style={styles.name}>Ozturk Sirin</Text>
+                        <Text style={styles.info}>{user?.email}</Text>
+                    </View>
+                </View>
+                <View>
+                    <MenuItem image={account} text={'Account'} onPress={null} />
+                    <MenuItem image={chats} text={'Chats'} onPress={goToMessages} />
+                    <MenuItem image={appereance} text={'Appereance'} onPress={null} />
+                    <MenuItem image={notification} text={'Notification'} onPress={null} />
+                    <MenuItem image={privacy} text={'Privacy'} onPress={null} />
+                    <MenuItem image={folder} text={'Data Usage'} onPress={null} />
+                    <MenuItem image={help} text={'Help'} onPress={null} />
+                    <MenuItem image={invite} text={'Invite Your Friends'} onPress={null} />
+                    <MenuItem image={logout} text={'Log out'} onPress={logOut} />
+
                 </View>
             </View>
-            <View>
-                <MenuItem image={account} text={'Account'} onPress={null} />
-                <MenuItem image={chats} text={'Chats'} onPress={null} />
-                <MenuItem image={appereance} text={'Appereance'} onPress={null} />
-                <MenuItem image={notification} text={'Notification'} onPress={null} />
-                <MenuItem image={privacy} text={'Privacy'} onPress={null} />
-                <MenuItem image={folder} text={'Data Usage'} onPress={null} />
-                <MenuItem image={help} text={'Help'} onPress={null} />
-                <MenuItem image={invite} text={'Invite Your Friends'} onPress={null} />
-                <MenuItem image={logout} text={'Log out'} onPress={logOut} />
-
-            </View>
-        </View>
+            <BottomBar />
+        </>
     )
 }
 export default Menu
