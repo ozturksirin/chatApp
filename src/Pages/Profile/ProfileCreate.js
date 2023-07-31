@@ -10,6 +10,8 @@ import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux'
+import { authCheck } from '../../Redux/Slices/authSlice'
+
 
 
 
@@ -83,6 +85,7 @@ const ProfileCreate = (props) => {
         try {
             const imageUrl = await uploadImage();
             await saveToFirestore(imageUrl);
+            dispatch(authCheck(true));
             Alert.alert(
                 'Success',
                 'Profile created successfully',
@@ -92,6 +95,7 @@ const ProfileCreate = (props) => {
                         onPress: () => navigation.navigate('Contacts'),
                     },
                 ]
+
             );
             setFirstName('');
             setLastName('');

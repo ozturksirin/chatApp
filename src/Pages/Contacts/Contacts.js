@@ -64,7 +64,7 @@ const Contacts = (props) => {
                     }
                 </ScrollView>
             </View>
-            <BottomBar />
+            {/* <BottomBar /> */}
         </>
     )
 }

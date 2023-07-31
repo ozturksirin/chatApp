@@ -32,7 +32,7 @@ const Messages = () => {
                     </View>
                 </TouchableOpacity>
             </View>
-            <BottomBar />
+            {/* <BottomBar /> */}
         </>
     )
 }

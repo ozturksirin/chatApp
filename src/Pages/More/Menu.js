@@ -64,7 +64,7 @@ const Menu = (props) => {
 
                 </View>
             </View>
-            <BottomBar />
+            {/* <BottomBar /> */}
         </>
     )
 }
