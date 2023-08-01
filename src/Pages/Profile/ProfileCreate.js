@@ -85,18 +85,17 @@ const ProfileCreate = (props) => {
         try {
             const imageUrl = await uploadImage();
             await saveToFirestore(imageUrl);
-            dispatch(authCheck(true));
-            Alert.alert(
-                'Success',
-                'Profile created successfully',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate('Contacts'),
-                    },
-                ]
-
-            );
+            dispatch(authCheck(true)),
+                Alert.alert(
+                    'Success',
+                    'Profile created successfully',
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => navigation.navigate('Contacts'),
+                        },
+                    ]
+                );
             setFirstName('');
             setLastName('');
             setImage(null);

@@ -22,8 +22,8 @@ const Login = (props) => {
                 await auth().signInWithEmailAndPassword(email, password);
                 const UID = auth().currentUser.uid;
                 await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
-                dispatch(save({ email, password, UID }));
                 dispatch(authCheck(true));
+                dispatch(save({ email, password, UID }));
                 navigation.navigate('Contacts')
                 console.log('signed in!');
             }
@@ -46,7 +46,6 @@ const Login = (props) => {
                 <InputModel placeholder='Password' onChangeText={setPassword} />
                 <ButtonModel title='Login' onPress={login} subTitle={'Register'} onPressSub={goRegister} />
             </View>
-
         </View>
     )
 }

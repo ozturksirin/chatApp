@@ -17,6 +17,7 @@ import { save, authCheck } from '../../Redux/Slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from '@react-native-firebase/auth'
 import BottomBar from '../Layouts/BottomBar'
+
 const Menu = (props) => {
     const { navigation } = props
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Menu = (props) => {
             AsyncStorage.removeItem('USER');
             dispatch(save(null));
             dispatch(authCheck(false));
-            if (user) {
+            if (!user) {
                 navigation.navigate('Login');
             }
         }
