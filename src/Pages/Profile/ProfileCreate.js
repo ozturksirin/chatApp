@@ -117,12 +117,14 @@ const ProfileCreate = (props) => {
     const saveToFirestore = async (imageUrl) => {
         const newCollectionRef = firestore().collection('users');
         const authUserId = auth().currentUser.uid;
+        const newDocumentRef = newCollectionRef.doc();
         await newCollectionRef.add({
+            id: newDocumentRef.id,
             authUserId: authUserId,
             firstName: firstName,
             lastName: lastName,
             image: imageUrl,
-            createdAt: new Date().getTime(),
+            createdAt: new Date(),
         });
     };
 

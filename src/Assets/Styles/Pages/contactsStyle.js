@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#152033', flex: 1, padding: 6
+        backgroundColor: '#0F1828', flex: 1, padding: 6
     },
     userArea: {
         flexDirection: 'row', padding: 8
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
         lineHeight: 20,
     },
     seperator: {
-        borderBottomColor: 'black',
+        borderBottomColor: '#152033',
         borderBottomWidth: 1,
     },
     userImg: {

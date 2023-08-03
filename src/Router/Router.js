@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image } from 'react-native';
+import { Image, BackHandler } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Chat from '../Pages/Chat/Chat';
@@ -18,7 +18,6 @@ import { useSelector } from 'react-redux';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +31,17 @@ const HomeStackScreen = () => {
                     borderTopWidth: 0,
                     paddingBottom: 4,
                 },
+                headerStyle: {
+                    backgroundColor: '#0F1828',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                },
+                headerTitleStyle: {
+                    color: '#fff'
+                },
             }}
+
         >
             <Tab.Screen name="Contacts"
                 component={Contacts}
@@ -83,12 +92,25 @@ const Router = () => {
     const isAuth = useSelector((state) => state.user.isAuth);
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Splash'>
+            <Stack.Navigator initialRouteName='Splash'
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: '#0F1828',
+                        elevation: 0,
+                        shadowOpacity: 0,
+                        borderBottomWidth: 0,
+                    },
+                    headerTitleStyle: {
+                        color: '#fff',
+                    },
+                    headerTintColor: '#fff',
+                }}
+            >
                 {
                     !isAuth ? (
                         <>
                             <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
-                            <Stack.Screen name='Login' component={Login} />
+                            <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
                             <Stack.Screen name='Register' component={Register} />
                             <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
                         </>

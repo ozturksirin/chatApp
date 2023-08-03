@@ -3,14 +3,20 @@ import { styles } from '../../Assets/Styles/Pages/contactsStyle'
 import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import User from '../../Assets/Images/icons/userImg.png'
 import firestore from '@react-native-firebase/firestore'
-import BottomBar from '../Layouts/BottomBar'
+import { useSelector } from 'react-redux'
+
 
 const Contacts = (props) => {
     const { navigation } = props
     const [users, setUsers] = useState([])
 
+    const currentUser = useSelector(state => state.user.user)
+    // useEffect(() => {
+    //     console.log('currentUser', currentUser);
+    // }, [])
+
     const getUser = async () => {
-        const userRef = firestore().collection('users');
+        const userRef = firestore().collection('users').where('authUserId', '!=', currentUser.UID);
         userRef.onSnapshot((querySnapshot) => {
             const usersData = [];
             querySnapshot.forEach((documentSnapshot) => {
@@ -25,10 +31,6 @@ const Contacts = (props) => {
     useEffect(() => {
         getUser()
     }, [])
-
-    const goToChat = () => {
-        navigation.navigate('Chat')
-    }
 
     return (
         <>
@@ -64,7 +66,6 @@ const Contacts = (props) => {
                     }
                 </ScrollView>
             </View>
-            {/* <BottomBar /> */}
         </>
     )
 }

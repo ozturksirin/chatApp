@@ -18,26 +18,27 @@ const Register = (props) => {
         navigation.navigate('Login')
     }
 
-    const register = () => {
+    const register = async () => {
         if (email && password && passwordAgain) {
             if (password === passwordAgain) {
-                auth().createUserWithEmailAndPassword(email, password)
-                    .then((response) => {
-                        console.log('response', response);
-                        navigation.navigate('ProfileCreate')
-                    })
-                    .catch((error) => {
-                        console.log('error', error);
-                    })
+                try {
+                    const response = await auth().createUserWithEmailAndPassword(email, password);
+                    console.log('response', response);
+                    navigation.navigate('ProfileCreate');
+                }
+                catch (error) {
+                    console.log('error', error);
+                }
             }
             else {
-                alert('Passwords are not same')
+                alert('Passwords are not the same');
             }
         }
         else {
-            alert('Please fill all inputs')
+            alert('Please fill all inputs');
         }
-    }
+    };
+
 
     return (
         <View style={styles.container}>
