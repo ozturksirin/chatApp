@@ -5,6 +5,8 @@ import User from '../../Assets/Images/icons/userImg.png'
 import firestore from '@react-native-firebase/firestore'
 import { useSelector } from 'react-redux'
 
+import auth from '@react-native-firebase/auth';
+
 
 const Contacts = (props) => {
     const { navigation } = props
@@ -15,8 +17,10 @@ const Contacts = (props) => {
     //     console.log('currentUser', currentUser);
     // }, [])
 
+    const currentUserData = auth().currentUser.uid;
+
     const getUser = async () => {
-        const userRef = firestore().collection('users').where('authUserId', '!=', currentUser.UID);
+        const userRef = firestore().collection('users').where('authUserId', '!=', currentUserData);
         userRef.onSnapshot((querySnapshot) => {
             const usersData = [];
             querySnapshot.forEach((documentSnapshot) => {
@@ -32,6 +36,43 @@ const Contacts = (props) => {
         getUser()
     }, [])
 
+    // const addNewChat = async (user) => {
+    //     try {
+    //         const newChat = firestore().collection('chats')
+    //         const newDocumentRef = newChat.doc();
+    //         await newChat.add({
+    //             id: newDocumentRef.id,
+    //             date: new Date(),
+    //             users: [
+    //                 currentUserData,
+    //                 user.authUserId
+    //             ],
+    //         })
+    //         navigation.navigate('Chat', { chatId: newChat.id, users: user })
+    //     }
+    //     catch (e) {
+    //         console.log(e);
+    //     }
+    // };
+
+    const addNewChat = async (user) => {
+        try {
+            const newChat = firestore().collection('chats')
+            const newDocumentRef = newChat.doc();
+            await newChat.add({
+                id: newDocumentRef.id,
+                date: new Date(),
+                users: [
+                    currentUserData,
+                    user.authUserId
+                ],
+            })
+            navigation.navigate('Chat', { chatId: newChat.id, users: user })
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
     return (
         <>
             <View style={styles.container}>
@@ -40,12 +81,7 @@ const Contacts = (props) => {
                         users.map((item, index) => {
                             return (
                                 <View key={index}>
-                                    <TouchableOpacity style={styles.userArea} onPress={
-                                        () => {
-                                            navigation.navigate('Chat', { user: item.authUserId, })
-                                            console.log('authUserId', item.authUserId);
-                                        }
-                                    }>
+                                    <TouchableOpacity style={styles.userArea} onPress={() => addNewChat(item)}>
                                         <Image source={
                                             item.image ? { uri: item.image } : User
                                         } style={styles.userImg} />
