@@ -5,7 +5,14 @@ export const styles = StyleSheet.create({
         backgroundColor: '#0F1828', flex: 1, padding: 6
     },
     userArea: {
-        flexDirection: 'row', padding: 8
+        flexDirection: 'row',
+        padding: 8,
+
+    },
+    userImg: {
+        width: 50,
+        height: 50,
+        borderRadius: 10
     },
     name: {
         color: '#F7F7FC',
@@ -62,5 +69,20 @@ export const styles = StyleSheet.create({
         fontSize: 10,
         lineHeight: 16,
         textAlign: 'center',
+    },
+    noMessagesContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: '#0F1828',
+    },
+    noMessagesText: {
+        color: '#F7F7FC',
+        fontFamily: 'Mulish',
+        fontStyle: 'normal',
+        fontWeight: '400',
+        fontSize: 14,
+        lineHeight: 24,
     },
 });

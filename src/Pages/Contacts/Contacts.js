@@ -3,22 +3,12 @@ import { styles } from '../../Assets/Styles/Pages/contactsStyle'
 import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import User from '../../Assets/Images/icons/userImg.png'
 import firestore from '@react-native-firebase/firestore'
-import { useSelector } from 'react-redux'
-
 import auth from '@react-native-firebase/auth';
-
 
 const Contacts = (props) => {
     const { navigation } = props
     const [users, setUsers] = useState([])
-
-    const currentUser = useSelector(state => state.user.user)
-    // useEffect(() => {
-    //     console.log('currentUser', currentUser);
-    // }, [])
-
     const currentUserData = auth().currentUser.uid;
-
     const getUser = async () => {
         const userRef = firestore().collection('users').where('authUserId', '!=', currentUserData);
         userRef.onSnapshot((querySnapshot) => {
@@ -31,32 +21,18 @@ const Contacts = (props) => {
             // console.log('data:', usersData);
         });
     };
-
     useEffect(() => {
         getUser()
     }, [])
-
-    // const addNewChat = async (user) => {
-    //     try {
-    //         const newChat = firestore().collection('chats')
-    //         const newDocumentRef = newChat.doc();
-    //         await newChat.add({
-    //             id: newDocumentRef.id,
-    //             date: new Date(),
-    //             users: [
-    //                 currentUserData,
-    //                 user.authUserId
-    //             ],
-    //         })
-    //         navigation.navigate('Chat', { chatId: newChat.id, users: user })
-    //     }
-    //     catch (e) {
-    //         console.log(e);
-    //     }
-    // };
-
     const addNewChat = async (user) => {
         try {
+            const checkChat = [currentUserData, user.authUserId]
+            const chatRef = firestore().collection('chats').where('users', '==', checkChat);
+            const chat = await chatRef.get();
+            if (!chat.empty) {
+                navigation.navigate('Chat', { chatId: chat.docs[0].id, users: user })
+                return;
+            }
             const newChat = firestore().collection('chats')
             const newDocumentRef = newChat.doc();
             await newChat.add({
@@ -90,7 +66,7 @@ const Contacts = (props) => {
                                                 {item?.firstName + ' ' + item?.lastName}
                                             </Text>
                                             <Text style={styles.lastMessage}>
-                                                {item?.lastName + '\'s last message'}
+                                                Status
                                             </Text>
                                         </View>
                                     </TouchableOpacity>
@@ -105,5 +81,4 @@ const Contacts = (props) => {
         </>
     )
 }
-
 export default Contacts
