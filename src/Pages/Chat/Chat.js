@@ -1,98 +1,120 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, } from 'react'
 import { styles } from '../../Assets/Styles/Pages/chatStyle'
-import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, Image, TextInput, TouchableOpacity } from 'react-native'
 import Plus from '../../Assets/Images/icons/plus.png'
-import Send from '../../Assets/Images/icons/send.png'
-import messaging from '@react-native-firebase/messaging';
-import { GiftedChat } from 'react-native-gifted-chat'
+import SendM from '../../Assets/Images/icons/send.png'
+import { GiftedChat, Bubble, Composer } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-
-const Chat = () => {
+const Chat = (props) => {
+    const { } = props
+    const { chatId, users } = props.route.params;
     const [messages, setMessages] = useState([])
-
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer...',
-                createdAt: new Date().getTime(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                },
-            },
-        ])
-    }, [])
-
-    const onSend = async (msgArr) => {
-
-    };
-
-    useEffect(() => {
-        // const newCollectionRef = firestore().collection("test")
-        // newCollectionRef.add({
-        //     text: "test",
-        //     createdAt: new Date().getTime(),
-        // })
-    }, [])
+        return firestore()
+            .doc(`messages/${chatId}`)
+            .onSnapshot((snapshot) => {
+                setMessages(snapshot.data()?.messages ?? []);
+            }
+            )
+    }, [chatId])
+    const onSend = (m = []) => {
+        firestore()
+            .doc(`messages/${chatId}`)
+            .set({
+                messages: GiftedChat.append(messages, m),
+            }, { merge: true })
+    }
     return (
-        <View style={styles.container}>
-
-            <View style={{ flex: 10, paddingHorizontal: 6 }}>
-
+        <>
+            <View style={styles.container} >
                 <GiftedChat
-                    messages={messages}
+                    messages={messages.map(x => ({
+                        ...x,
+                        createdAt: x.createdAt?.toDate()
+                    }))}
                     onSend={onSend}
                     user={{
-                        _id: auth?.currentUser?.email,
-                        name: auth?.currentUser?.email,
-                        // avatar: auth?.currentUser?.photoURL
+                        _id: auth().currentUser.uid,
+                        name: users?.firstName,
+                        avatar: users?.image,
                     }}
+                    renderBubble={(props) => (
+                        <Bubble
+                            {...props}
+                            wrapperStyle={{
+                                left: {
+                                    backgroundColor: '#0F1828',
+                                },
+                                right: {
+                                    backgroundColor: '#375FFF'
+                                },
+                            }}
+                            textStyle={{
+                                left: {
+                                    color: '#F7F7FC',
+                                },
+                                right: {
+                                    color: '#F7F7FC',
+                                },
+                            }}
+                        />
+                    )}
+                    renderInputToolbar={(props) => (
+                        <View style={styles.inputArea}>
+                            <TouchableOpacity
+                                {...props}
+                                style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 4 }}>
+                                <Image source={Plus} />
+                            </TouchableOpacity>
+                            <TextInput
+                                {...props}
+                                value={props.text}
+                                placeholder='Type a message'
+                                placeholderTextColor={'#F7F7FC'}
+                                onChangeText={
+                                    (text) => {
+                                        props.onTextChanged(text);
+                                    }
+                                }
+                                style={styles.input}
+                            />
+                            <TouchableOpacity
+                                {...props}
+                                onPress={() => {
+                                    if (props.text && props.text.trim().length > 0) {
+                                        props.onSend({ text: props.text.trim() }, true);
+                                    }
+                                }}
+                                style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 4 }}>
+                                <Image
+                                    source={SendM}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                        resizeMode: 'contain',
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                // renderComposer={(composerProps) => (
+                //     <Composer
+                //         {...composerProps}
+                //         textInputStyle={{
+                //             color: '#F7F7FC',
+                //             backgroundColor: '#152033',
+                //             borderRadius: 4,
+                //             gap: 10,
+                //             paddingVertical: 6,
+                //             paddingHorizontal: 8,
+                //         }}
+                //     />
+                // )}
                 />
-
-                {/* <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 10 }}>
-                    <Text style={{ color: '#ADB5BD', fontFamily: 'Lato', fontSize: 11, fontStyle: 'normal', fontWeight: '400', lineHeight: 16 }}>Today</Text>
-                </View> */}
-
-                {/* incoming message start */}
-
-                {/* <View style={styles.chatArea} >
-                    <Text style={styles.text}>lorem ipsum dolor sit amet</Text>
-                    <Text style={styles.time}>14:29</Text>
-                </View> */}
-
-                {/* incoming message end */}
-
-                {/* outgoing message start */}
-                {/* <View style={[styles.chatArea, { alignSelf: 'flex-end', backgroundColor: '#375FFF' }]} >
-                    <Text style={styles.text}>lorem ipsum dolor sit amet</Text>
-                    <Text style={styles.time}>14:29</Text>
-                </View> */}
-            </View>
-            {/* <View style={styles.inputArea}>
-                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 4 }}>
-                    <Image source={Plus} />
-                </TouchableOpacity>
-
-                <TextInput placeholder='Type a message'
-                    placeholderTextColor={'#F7F7FC'}
-                    style={styles.input}
-                />
-
-                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 4 }}>
-                    <Image
-                        source={Send}
-                        style={{
-                            width: 24,
-                            height: 24,
-                            resizeMode: 'contain',
-                        }}
-                    />
-                </TouchableOpacity>
-            </View> */}
-        </View>
+            </View >
+        </>
     )
 }
 export default Chat
