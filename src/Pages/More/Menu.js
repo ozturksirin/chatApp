@@ -16,12 +16,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { save, authCheck } from '../../Redux/Slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from '@react-native-firebase/auth'
-import BottomBar from '../Layouts/BottomBar'
+import firestore from '@react-native-firebase/firestore'
 
 const Menu = (props) => {
     const { navigation } = props
+    const [info, setInfo] = useState(null);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
+    const UID = auth().currentUser.uid;
     useEffect(() => {
         console.log('user', user);
     }, []);
@@ -42,13 +44,28 @@ const Menu = (props) => {
     const goToMessages = () => {
         navigation.navigate('Messages');
     }
+
+    const getProfile = async () => {
+        const userRef = firestore().collection('users').where('authUserId', '==', UID);
+        const doc = await userRef.get();
+        const data = doc.docs[0].data();
+        setInfo(data);
+    }
+
+    useEffect(() => {
+        getProfile();
+        // console.log('info', info);
+    }, []);
+
     return (
         <>
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', }}>
-                    <Image source={User} style={styles.user} />
+                    <Image source={
+                        info?.image ? { uri: info?.image } : User
+                    } style={styles.user} />
                     <View style={styles.textArea}>
-                        <Text style={styles.name}>Ozturk Sirin</Text>
+                        <Text style={styles.name}>{info?.firstName ? info.firstName : 'empty'} {info?.lastName ? info.lastName : 'empty'}</Text>
                         <Text style={styles.info}>{user?.email}</Text>
                     </View>
                 </View>
@@ -65,7 +82,6 @@ const Menu = (props) => {
 
                 </View>
             </View>
-            {/* <BottomBar /> */}
         </>
     )
 }

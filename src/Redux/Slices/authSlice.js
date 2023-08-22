@@ -8,9 +8,11 @@ export const authSlice = createSlice({
     },
     reducers: {
         save: (state, action) => {
+            // console.log('action', action.payload);
             state.user = action.payload;
         },
         authCheck: (state, action) => {
+            // console.log('action', action.payload);
             state.isAuth = action.payload;
         },
     },

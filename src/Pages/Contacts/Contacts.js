@@ -4,6 +4,7 @@ import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import User from '../../Assets/Images/icons/userImg.png';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Contacts = (props) => {
     const { navigation } = props;
@@ -33,8 +34,12 @@ const Contacts = (props) => {
 
     const addNewChat = async (user) => {
         try {
-            const checkChat = [currentUserData, user.authUserId];
-            const chatRef = firestore().collection('chats').where('users', '==', checkChat);
+            const currentUserUid = auth().currentUser.uid;
+            const otherUserUid = user.authUserId;
+            const users = [currentUserUid, otherUserUid];
+            users.sort(); // Sort user IDs to ensure consistent order
+
+            const chatRef = firestore().collection('chats').where('users', '==', users);
             const chatQuerySnapshot = await chatRef.get();
 
             if (!chatQuerySnapshot.empty) {
@@ -49,33 +54,44 @@ const Contacts = (props) => {
             await newDocumentRef.set({
                 id: newDocumentRef.id,
                 date: new Date(),
-                users: [currentUserData, user.authUserId],
+                users: users,
             });
 
-            navigation.navigate('Chat', { chatId: newDocumentRef.id, users: [currentUserData, user.authUserId] });
+            navigation.navigate('Chat', { chatId: newDocumentRef.id, users: users });
         } catch (error) {
             console.error('Error creating or navigating to chat:', error);
         }
     };
+
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 {users.map((item, index) => (
                     <View key={index}>
-                        <TouchableOpacity style={styles.userArea} onPress={() => addNewChat(item)}>
-                            <Image source={item.image ? { uri: item.image } : User} style={styles.userImg} />
-                            <View style={{ paddingLeft: 10, flex: 1 }}>
-                                <Text style={styles.name}>
-                                    {item?.firstName + ' ' + item?.lastName}
-                                </Text>
-                                <Text style={styles.lastMessage}>
-                                    Status
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            padding: 8
+                        }}>
+                            <TouchableWithoutFeedback onPress={() => console.log('feedback')}>
+                                <Image source={item.image ? { uri: item.image } : User} style={styles.userImg} />
+                            </TouchableWithoutFeedback>
+
+                            <TouchableOpacity style={styles.userArea} onPress={() => addNewChat(item)}>
+                                <View style={{ paddingLeft: 10, flex: 1 }}>
+                                    <Text style={styles.name}>
+                                        {item?.firstName + ' ' + item?.lastName}
+                                    </Text>
+                                    <Text style={styles.lastMessage}>
+                                        Status
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                         <View style={styles.seperator} />
                     </View>
+
                 ))}
             </ScrollView>
         </View>
