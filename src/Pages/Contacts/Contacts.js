@@ -16,7 +16,6 @@ const Contacts = (props) => {
             const userRef = firestore().collection('users').where('authUserId', '!=', currentUserData);
             const querySnapshot = await userRef.get();
             const usersData = [];
-
             querySnapshot.forEach((documentSnapshot) => {
                 const docData = documentSnapshot.data();
                 usersData.push(docData);
@@ -38,17 +37,14 @@ const Contacts = (props) => {
             const otherUserUid = user.authUserId;
             const users = [currentUserUid, otherUserUid];
             users.sort(); // Sort user IDs to ensure consistent order
-
             const chatRef = firestore().collection('chats').where('users', '==', users);
             const chatQuerySnapshot = await chatRef.get();
-
             if (!chatQuerySnapshot.empty) {
                 const chatDoc = chatQuerySnapshot.docs[0];
                 const chatData = chatDoc.data();
-                navigation.navigate('Chat', { chatId: chatDoc.id, users: chatData.users });
+                navigation.navigate('Chat', { chatId: chatDoc.id, users: user });
                 return;
             }
-
             const newChat = firestore().collection('chats');
             const newDocumentRef = newChat.doc();
             await newDocumentRef.set({
@@ -56,8 +52,7 @@ const Contacts = (props) => {
                 date: new Date(),
                 users: users,
             });
-
-            navigation.navigate('Chat', { chatId: newDocumentRef.id, users: users });
+            navigation.navigate('Chat', { chatId: newDocumentRef.id, users: user });
         } catch (error) {
             console.error('Error creating or navigating to chat:', error);
         }
@@ -78,7 +73,10 @@ const Contacts = (props) => {
                                 <Image source={item.image ? { uri: item.image } : User} style={styles.userImg} />
                             </TouchableWithoutFeedback>
 
-                            <TouchableOpacity style={styles.userArea} onPress={() => addNewChat(item)}>
+                            <TouchableOpacity style={styles.userArea} onPress={() => {
+                                // console.log("Chat Pressed:", item);
+                                addNewChat(item);
+                            }}>
                                 <View style={{ paddingLeft: 10, flex: 1 }}>
                                     <Text style={styles.name}>
                                         {item?.firstName + ' ' + item?.lastName}
@@ -91,7 +89,6 @@ const Contacts = (props) => {
                         </View>
                         <View style={styles.seperator} />
                     </View>
-
                 ))}
             </ScrollView>
         </View>

@@ -3,7 +3,7 @@ import { styles } from '../../Assets/Styles/Pages/chatStyle'
 import { View, Image, TextInput, TouchableOpacity } from 'react-native'
 import Plus from '../../Assets/Images/icons/plus.png'
 import SendM from '../../Assets/Images/icons/send.png'
-import { GiftedChat, Bubble, Composer } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -12,6 +12,10 @@ const Chat = (props) => {
     const { chatId, users } = props.route.params;
     const [messages, setMessages] = useState([])
     useEffect(() => {
+        console.log('chatId', chatId);
+        console.log('users', users);
+    }, [])
+    useEffect(() => {
         return firestore()
             .doc(`messages/${chatId}`)
             .onSnapshot((snapshot) => {
@@ -19,13 +23,14 @@ const Chat = (props) => {
             }
             )
     }, [chatId])
-    const onSend = (m = []) => {
+    const onSend = (msg = []) => {
         firestore()
             .doc(`messages/${chatId}`)
             .set({
-                messages: GiftedChat.append(messages, m),
+                messages: GiftedChat.append(messages, msg),
             }, { merge: true })
     }
+
     return (
         <>
             <View style={styles.container} >
@@ -38,7 +43,7 @@ const Chat = (props) => {
                     user={{
                         _id: auth().currentUser.uid,
                         name: users?.firstName,
-                        avatar: users?.image,
+                        avatar: null,
                     }}
                     renderBubble={(props) => (
                         <Bubble
@@ -71,7 +76,7 @@ const Chat = (props) => {
                             <TextInput
                                 {...props}
                                 value={props.text}
-                                placeholder='Type a message'
+                                placeholder='Your message'
                                 placeholderTextColor={'#F7F7FC'}
                                 onChangeText={
                                     (text) => {
@@ -99,19 +104,6 @@ const Chat = (props) => {
                             </TouchableOpacity>
                         </View>
                     )}
-                // renderComposer={(composerProps) => (
-                //     <Composer
-                //         {...composerProps}
-                //         textInputStyle={{
-                //             color: '#F7F7FC',
-                //             backgroundColor: '#152033',
-                //             borderRadius: 4,
-                //             gap: 10,
-                //             paddingVertical: 6,
-                //             paddingHorizontal: 8,
-                //         }}
-                //     />
-                // )}
                 />
             </View >
         </>

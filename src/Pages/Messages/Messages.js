@@ -78,9 +78,10 @@ const Messages = (props) => {
                             chat.map((item, index) => {
                                 return (
                                     <View key={index}>
-                                        <TouchableOpacity style={styles.userArea} onPress={
-                                            () => navigation.navigate('Chat', { chatId: item.id, users: item.otherUser })
-                                        }>
+                                        <TouchableOpacity style={styles.userArea} onPress={() => {
+                                            // console.log("Chat Pressed:", item);
+                                            navigation.navigate('Chat', { chatId: item.id, users: item.otherUser });
+                                        }}>
                                             <Image source={
                                                 item.otherUser.image ? { uri: item.otherUser.image } : User
                                             } style={styles.userImg} />
@@ -104,10 +105,9 @@ const Messages = (props) => {
                                         </TouchableOpacity>
                                     </View>
                                 )
-
                             })
                         }
-                    </View>
+                    </View >
             }
         </>
     )
