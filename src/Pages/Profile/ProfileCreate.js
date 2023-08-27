@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { styles } from '../../Assets/Styles/Pages/profileCreateStyle'
-import { View, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, Image, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import InputModel from '../../Components/InputModel'
 import ButtonModel from '../../Components/ButtonModel'
 import uploadImg from '../../Assets/Images/uploadImg.png'
@@ -13,13 +13,12 @@ import { useDispatch } from 'react-redux'
 import { authCheck } from '../../Redux/Slices/authSlice'
 
 
-
-
 const ProfileCreate = (props) => {
     const { navigation } = props
     const [image, setImage] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
     const openCamera = () => {
@@ -69,6 +68,7 @@ const ProfileCreate = (props) => {
     };
 
     const saveProfile = async () => {
+        setIsLoading(true);
         if (!image) {
             Alert.alert('Error', 'Please select an image');
             return;
@@ -103,6 +103,9 @@ const ProfileCreate = (props) => {
         catch (error) {
             console.error('Error while saving profile:', error);
             Alert.alert('Error', 'An error occurred while saving the profile.');
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -145,10 +148,9 @@ const ProfileCreate = (props) => {
                 <InputModel placeholder='Last Name (Required)' value={lastName} onChangeText={setLastName} />
             </View>
             <View style={styles.btnArea}>
-                <ButtonModel title='Save' onPress={saveProfile} />
+                <ButtonModel title={isLoading ? <ActivityIndicator size={'small'} color={'#FFF'} /> : 'Save'} onPress={isLoading ? null : saveProfile} />
             </View>
         </View>
     )
 }
-
 export default ProfileCreate
