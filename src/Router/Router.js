@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Account from '../Pages/More/Account/Account';
 const Tab = createBottomTabNavigator();
 
 const HomeStackScreen = () => {
@@ -121,6 +122,7 @@ const Router = () => {
                                 <Stack.Screen name='Chat' component={Chat} />
                                 <Stack.Screen name="Messages" component={Messages} />
                                 <Stack.Screen name='Menu' component={Menu} />
+                                <Stack.Screen name='Account' component={Account} />
                             </>
                         )
                 }

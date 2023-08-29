@@ -45,6 +45,10 @@ const Menu = (props) => {
         navigation.navigate('Messages');
     }
 
+    const goToAccount = () => {
+        navigation.navigate('Account');
+    };
+
     const getProfile = async () => {
         const userRef = firestore().collection('users').where('authUserId', '==', UID);
         const doc = await userRef.get();
@@ -70,7 +74,7 @@ const Menu = (props) => {
                     </View>
                 </View>
                 <View>
-                    <MenuItem image={account} text={'Account'} onPress={null} />
+                    <MenuItem image={account} text={'Account'} onPress={goToAccount} />
                     <MenuItem image={chats} text={'Chats'} onPress={goToMessages} />
                     <MenuItem image={appereance} text={'Appereance'} onPress={null} />
                     <MenuItem image={notification} text={'Notification'} onPress={null} />
