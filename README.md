@@ -78,3 +78,4 @@ To learn more about React Native, take a look at the following resources:
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 # chatApp
+![1](https://github.com/ozturksirin/chatApp/assets/92751534/0475dfe5-362f-43d5-8a1b-e72082c9ac1f)
