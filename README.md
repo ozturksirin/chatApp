@@ -78,15 +78,15 @@ To learn more about React Native, take a look at the following resources:
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 # chatApp
-![1](https://github.com/ozturksirin/chatApp/assets/92751534/0475dfe5-362f-43d5-8a1b-e72082c9ac1f)
-![2](https://github.com/ozturksirin/chatApp/assets/92751534/279e8b8f-a19c-45dc-a275-d57e2a6adf11)
-![3](https://github.com/ozturksirin/chatApp/assets/92751534/0921cccb-93e7-4f17-a8eb-dc6d2cf8cecf)
-![4](https://github.com/ozturksirin/chatApp/assets/92751534/16a516d0-980d-43ea-8048-595ea6d50cdc)
-![5](https://github.com/ozturksirin/chatApp/assets/92751534/71d5829e-0d8e-42a5-b748-c38a4145f450)
-![6](https://github.com/ozturksirin/chatApp/assets/92751534/b69b674e-934a-4833-893b-96699c0215d3)
-![7](https://github.com/ozturksirin/chatApp/assets/92751534/9efdd554-e158-4115-86c7-d2f75188200b)
-![8](https://github.com/ozturksirin/chatApp/assets/92751534/0aab74ed-0cdb-43f0-a22f-b6a1322a48d1)
-![9](https://github.com/ozturksirin/chatApp/assets/92751534/993bf49a-33c4-48c6-87fb-7ca7f9cfb09a)
-![10](https://github.com/ozturksirin/chatApp/assets/92751534/647340f9-c1e7-4e1a-911b-02064e85705c)
-![11](https://github.com/ozturksirin/chatApp/assets/92751534/d49e5c7c-6c03-4e04-9dc0-dd151cd9ae61)
-![12](https://github.com/ozturksirin/chatApp/assets/92751534/a581418c-839f-4ce0-896e-9c62700a15c3)
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/0475dfe5-362f-43d5-8a1b-e72082c9ac1f" alt="1" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/279e8b8f-a19c-45dc-a275-d57e2a6adf11" alt="2" width="300"/>
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/0921cccb-93e7-4f17-a8eb-dc6d2cf8cecf" alt="3" width="300"/>
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/16a516d0-980d-43ea-8048-595ea6d50cdc" alt="4" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/71d5829e-0d8e-42a5-b748-c38a4145f450" alt="5" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/b69b674e-934a-4833-893b-96699c0215d3" alt="6" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/9efdd554-e158-4115-86c7-d2f75188200b" alt="7" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/0aab74ed-0cdb-43f0-a22f-b6a1322a48d1" alt="8" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/993bf49a-33c4-48c6-87fb-7ca7f9cfb09a" alt="9" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/647340f9-c1e7-4e1a-911b-02064e85705c" alt="10" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/d49e5c7c-6c03-4e04-9dc0-dd151cd9ae61" alt="11" width="300" />
+<img src="https://github.com/ozturksirin/chatApp/assets/92751534/a581418c-839f-4ce0-896e-9c62700a15c3" alt="12" width="300" />
