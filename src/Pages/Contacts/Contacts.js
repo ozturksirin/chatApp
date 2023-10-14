@@ -49,6 +49,8 @@ const Contacts = (props) => {
             const newDocumentRef = newChat.doc();
             await newDocumentRef.set({
                 id: newDocumentRef.id,
+                receivingUserStatus: true,
+                sentByUserStatus: true,
                 date: new Date(),
                 users: users,
             });

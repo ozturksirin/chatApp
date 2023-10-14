@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, Image, TouchableOpacity } from 'react-native'
+import { Text, View, Image, TouchableOpacity, Alert } from 'react-native'
 import User from '../../Assets/Images/icons/userImg.png'
 import { styles } from '../../Assets/Styles/Pages/messagesStyle'
 import firestore from '@react-native-firebase/firestore'
@@ -8,17 +8,34 @@ const Messages = (props) => {
     const { navigation } = props;
     const [chat, setChat] = useState([]);
     const currentUserData = auth().currentUser;
+
     const ChatData = async () => {
         try {
             const chatRef = firestore().collection('chats');
-            const querySnapshot = await chatRef
-                .where('users', 'array-contains-any', [currentUserData.uid])
-                .get();
+            let querySnapshot;
+
+            if (currentUserData.uid === chat[0]?.users[0]) {
+                querySnapshot = await chatRef.where('users', 'array-contains', currentUserData.uid).where('receivingUserStatus', '==', true).get();
+            }
+            else {
+                querySnapshot = await chatRef.where('users', 'array-contains', currentUserData.uid).where('sentByUserStatus', '==', true).get();
+            }
+
+            // if (currentUserData.uid == chat[0]) {
+            //     querySnapshot = await chatRef.where('sentByUserStatus', '==', true).get();
+            // }
+            // else {
+            //     querySnapshot = await chatRef.where('receivingUserStatus', '==', true).get();
+            // }
+
+
             const chats = [];
             querySnapshot.forEach((documentSnapshot) => {
                 const docData = documentSnapshot.data();
                 chats.push(docData);
             });
+
+            console.log('chats', chats);
             return chats;
         }
         catch (error) {
@@ -65,6 +82,52 @@ const Messages = (props) => {
         });
         return unsubscribe;
     }, [navigation]);
+
+    const onLongPress = (chatId) => {
+        Alert.alert(
+            "Delete Chat",
+            "Are you sure you want to delete this chat?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Delete",
+                    onPress: () => {
+                        if (currentUserData.uid === chat[0].users[0]) {
+                            firestore().doc(`chats/${chatId}`).update({
+                                sentByUserStatus: false,
+                            })
+                                .then(() => {
+                                    console.log("Chat deleted!");
+                                    getChat();
+                                })
+                                .catch((error) => {
+                                    console.error("Error deleting chat:", error);
+                                });
+                        }
+                        else {
+                            firestore().doc(`chats/${chatId}`).update({
+                                receivingUserStatus: false,
+                            })
+                                .then(() => {
+                                    console.log("Chat deleted!");
+                                    getChat();
+                                })
+                                .catch((error) => {
+                                    console.error("Error deleting chat:", error);
+                                });
+                        }
+                    },
+                    style: "destructive"
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     return (
         <>
             {
@@ -81,7 +144,14 @@ const Messages = (props) => {
                                         <TouchableOpacity style={styles.userArea} onPress={() => {
                                             // console.log("Chat Pressed:", item);
                                             navigation.navigate('Chat', { chatId: item.id, users: item.otherUser });
-                                        }}>
+                                        }}
+                                            onLongPress={
+                                                () => {
+                                                    onLongPress(item.id);
+                                                    console.log('item.id(chatId)', item.id);
+                                                }
+                                            }
+                                        >
                                             <Image source={
                                                 item.otherUser.image ? { uri: item.otherUser.image } : User
                                             } style={styles.userImg} />
@@ -98,7 +168,7 @@ const Messages = (props) => {
                                                         Last Message
                                                     </Text>
                                                     <View style={styles.notificationArea}>
-                                                        <Text style={styles.notification}>0</Text>
+                                                        <Text style={styles.notification}>1</Text>
                                                     </View>
                                                 </View>
                                             </View>
