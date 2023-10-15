@@ -17,6 +17,7 @@ import { save, authCheck } from '../../Redux/Slices/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Menu = (props) => {
     const { navigation } = props
@@ -64,27 +65,29 @@ const Menu = (props) => {
     return (
         <>
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row', }}>
-                    <Image source={
-                        info?.image ? { uri: info?.image } : User
-                    } style={styles.user} />
-                    <View style={styles.textArea}>
-                        <Text style={styles.name}>{info?.firstName ? info.firstName : 'empty'} {info?.lastName ? info.lastName : 'empty'}</Text>
-                        <Text style={styles.info}>{user?.email}</Text>
+                <ScrollView>
+                    <View style={{ flexDirection: 'row', }}>
+                        <Image source={
+                            info?.image ? { uri: info?.image } : User
+                        } style={styles.user} />
+                        <View style={styles.textArea}>
+                            <Text style={styles.name}>{info?.firstName ? info.firstName : 'empty'} {info?.lastName ? info.lastName : 'empty'}</Text>
+                            <Text style={styles.info}>{user?.email}</Text>
+                        </View>
                     </View>
-                </View>
-                <View>
-                    <MenuItem image={account} text={'Account'} onPress={goToAccount} />
-                    <MenuItem image={chats} text={'Chats'} onPress={goToMessages} />
-                    <MenuItem image={appereance} text={'Appereance'} onPress={null} />
-                    <MenuItem image={notification} text={'Notification'} onPress={null} />
-                    <MenuItem image={privacy} text={'Privacy'} onPress={null} />
-                    <MenuItem image={folder} text={'Data Usage'} onPress={null} />
-                    <MenuItem image={help} text={'Help'} onPress={null} />
-                    <MenuItem image={invite} text={'Invite Your Friends'} onPress={null} />
-                    <MenuItem image={logout} text={'Log out'} onPress={logOut} />
+                    <View>
+                        <MenuItem image={account} text={'Account'} onPress={goToAccount} />
+                        <MenuItem image={chats} text={'Chats'} onPress={goToMessages} />
+                        <MenuItem image={appereance} text={'Appereance'} onPress={null} />
+                        <MenuItem image={notification} text={'Notification'} onPress={null} />
+                        <MenuItem image={privacy} text={'Privacy'} onPress={null} />
+                        <MenuItem image={folder} text={'Data Usage'} onPress={null} />
+                        <MenuItem image={help} text={'Help'} onPress={null} />
+                        <MenuItem image={invite} text={'Invite Your Friends'} onPress={null} />
+                        <MenuItem image={logout} text={'Log out'} onPress={logOut} />
 
-                </View>
+                    </View>
+                </ScrollView>
             </View>
         </>
     )
