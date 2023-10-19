@@ -25,7 +25,7 @@ const Register = (props) => {
                 try {
                     const response = await auth().createUserWithEmailAndPassword(email, password);
                     console.log('response', response);
-                    navigation.navigate('ProfileCreate');
+                    navigation.navigate('ProfileCreate', { UID: response.user.uid, email, password });
                 }
                 catch (error) {
                     console.log('error', error);

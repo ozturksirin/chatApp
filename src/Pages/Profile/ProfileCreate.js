@@ -10,16 +10,22 @@ import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux'
-import { authCheck } from '../../Redux/Slices/authSlice'
+import { authCheck, save } from '../../Redux/Slices/authSlice'
 
 
 const ProfileCreate = (props) => {
-    const { navigation } = props
+    const { navigation,
+        route: {
+            params: { UID, email, password }
+        }
+    } = props
     const [image, setImage] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+
+    // console.log('params', UID, email, password);
 
     const openCamera = () => {
         launchCamera({
@@ -85,6 +91,8 @@ const ProfileCreate = (props) => {
         try {
             const imageUrl = await uploadImage();
             await saveToFirestore(imageUrl);
+            await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
+            dispatch(save({ email, password, UID }));
             dispatch(authCheck(true)),
                 Alert.alert(
                     'Success',
@@ -103,6 +111,7 @@ const ProfileCreate = (props) => {
         catch (error) {
             console.error('Error while saving profile:', error);
             Alert.alert('Error', 'An error occurred while saving the profile.');
+            setIsLoading(false);
         }
         finally {
             setIsLoading(false);
