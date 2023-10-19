@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styles } from '../../Assets/Styles/Pages/contactsStyle';
-import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import User from '../../Assets/Images/icons/userImg.png';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -9,6 +9,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 const Contacts = (props) => {
     const { navigation } = props;
     const [users, setUsers] = useState([]);
+    const [refresh, setRefresh] = useState(false);
     const currentUserData = auth().currentUser.uid;
 
     const getUser = async () => {
@@ -21,9 +22,15 @@ const Contacts = (props) => {
                 usersData.push(docData);
             });
 
-            setUsers(usersData);
+            // Shuffle data 
+            usersData.sort(() => Math.random() - 0.5);
+
+            // first ten(10) data
+            const first10Users = usersData.slice(0, 10);
+
+            setUsers(first10Users);
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Kullanıcılar getirilirken hata oluştu:', error);
         }
     };
 
@@ -60,10 +67,21 @@ const Contacts = (props) => {
         }
     };
 
+    const onRefresh = () => {
+        setRefresh(true);
+        getUser();
+        setRefresh(false);
+    };
+
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView refreshControl={
+                <RefreshControl
+                    refreshing={refresh}
+                    onRefresh={onRefresh}
+                />
+            } >
                 {users.map((item, index) => (
                     <View key={index}>
                         <View style={{

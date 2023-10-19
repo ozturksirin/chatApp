@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Image, BackHandler } from 'react-native';
+import { styles } from '../Assets/Styles/routerStyle';
+import { Image, BackHandler, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Chat from '../Pages/Chat/Chat';
@@ -119,7 +120,26 @@ const Router = () => {
                         (
                             <>
                                 <Stack.Screen name='Home' component={HomeStackScreen} options={{ headerShown: false }} />
-                                <Stack.Screen name='Chat' component={Chat} />
+                                <Stack.Screen name='Chat' component={Chat}
+                                    options={({ route }) => ({
+                                        headerTitle: () => (
+                                            <View style={styles.area}>
+                                                <Image
+                                                    style={styles.image}
+                                                    source={
+                                                        route.params.users.image
+                                                            ? { uri: route.params.users.image }
+                                                            : null
+                                                    }
+                                                />
+                                                <Text
+                                                    style={styles.userName}
+                                                >{route.params.users.firstName + ' ' + route.params.users.lastName}</Text>
+                                            </View>
+                                        ),
+                                    })}
+
+                                />
                                 <Stack.Screen name="Messages" component={Messages} />
                                 <Stack.Screen name='Menu' component={Menu} />
                                 <Stack.Screen name='Account' component={Account} />

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { styles } from '../../Assets/Styles/Pages/menuStyle'
-import { Image, View, Text } from 'react-native'
-import User from '../../Assets/Images/icons/userImg.png'
+import { Image, View, Text, ActivityIndicator } from 'react-native'
 import MenuItem from '../../Components/MenuItem'
 import account from '../../Assets/Images/icons/account.png'
 import chats from '../../Assets/Images/icons/chats.png'
@@ -67,9 +66,13 @@ const Menu = (props) => {
             <View style={styles.container}>
                 <ScrollView>
                     <View style={{ flexDirection: 'row', }}>
-                        <Image source={
-                            info?.image ? { uri: info?.image } : User
-                        } style={styles.user} />
+                        {
+                            info?.image ?
+                                <Image source={{ uri: info?.image }} style={styles.user} />
+                                :
+                                <ActivityIndicator size="large" color="#0000ff" />
+                        }
+
                         <View style={styles.textArea}>
                             <Text style={styles.name}>{info?.firstName ? info.firstName : 'empty'} {info?.lastName ? info.lastName : 'empty'}</Text>
                             <Text style={styles.info}>{user?.email}</Text>
