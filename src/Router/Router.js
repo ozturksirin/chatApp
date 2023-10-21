@@ -45,7 +45,7 @@ const HomeStackScreen = () => {
             }}
 
         >
-            <Tab.Screen name="Contacts"
+            <Tab.Screen name="Matchs"
                 component={Contacts}
                 options={{
                     tabBarIcon: ({ focused }) => (

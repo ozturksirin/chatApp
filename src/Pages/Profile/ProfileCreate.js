@@ -100,7 +100,7 @@ const ProfileCreate = (props) => {
                     [
                         {
                             text: 'OK',
-                            onPress: () => navigation.navigate('Contacts'),
+                            onPress: () => navigation.navigate('Matchs'),
                         },
                     ]
                 );

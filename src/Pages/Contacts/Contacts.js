@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styles } from '../../Assets/Styles/Pages/contactsStyle';
-import { Text, View, Image, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ScrollView, RefreshControl, Modal, Pressable } from 'react-native';
 import User from '../../Assets/Images/icons/userImg.png';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -10,7 +10,10 @@ const Contacts = (props) => {
     const { navigation } = props;
     const [users, setUsers] = useState([]);
     const [refresh, setRefresh] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
     const currentUserData = auth().currentUser.uid;
+
 
     const getUser = async () => {
         try {
@@ -76,20 +79,51 @@ const Contacts = (props) => {
 
     return (
         <View style={styles.container}>
+            {/* Modal start */}
+
+
+            <Modal
+                hardwareAccelerated={true}
+                animationType='slide'
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Image source={selectedUser?.image ? { uri: selectedUser?.image } : User} style={styles.modalBigImg} />
+                        <Text style={styles.modalText}>
+                            {
+                                selectedUser?.firstName + ' ' + selectedUser?.lastName
+                            }
+                        </Text>
+                        <Pressable style={styles.closeBtn}
+
+                            onPress={
+                                () => { setModalVisible(!modalVisible); }
+                            }>
+                            <Text style={styles.btnText}>Close</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+            {/* Modal END */}
+
             <ScrollView refreshControl={
                 <RefreshControl
                     refreshing={refresh}
                     onRefresh={onRefresh}
                 />
-            } >
+            }>
                 {users.map((item, index) => (
                     <View key={index}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            padding: 8
-                        }}>
-                            <TouchableWithoutFeedback onPress={() => console.log('feedback')}>
+                        <View style={styles.area}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                setSelectedUser(item);
+                                setModalVisible(true);
+                            }}>
                                 <Image source={item.image ? { uri: item.image } : User} style={styles.userImg} />
                             </TouchableWithoutFeedback>
 
@@ -101,7 +135,7 @@ const Contacts = (props) => {
                                     <Text style={styles.name}>
                                         {item?.firstName + ' ' + item?.lastName}
                                     </Text>
-                                    <Text style={styles.lastMessage}>
+                                    <Text style={styles.status}>
                                         Status
                                     </Text>
                                 </View>

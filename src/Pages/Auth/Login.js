@@ -25,7 +25,7 @@ const Login = (props) => {
                 await AsyncStorage.setItem('USER', JSON.stringify({ email, password }));
                 dispatch(authCheck(true));
                 dispatch(save({ email, password, UID }));
-                navigation.navigate('Contacts')
+                navigation.navigate('Matchs')
                 // console.log('signed in!');
                 setIsLoading(false);
             }

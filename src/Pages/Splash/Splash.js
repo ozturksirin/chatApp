@@ -18,7 +18,7 @@ const Splash = (props) => {
                 dispatch(save(user));
                 dispatch(authCheck(true));
                 setTimeout(() => {
-                    navigation.navigate('Contacts');
+                    navigation.navigate('Matchs');
                 }, 3000);
             }
             else {

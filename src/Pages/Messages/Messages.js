@@ -35,7 +35,7 @@ const Messages = (props) => {
                 chats.push(docData);
             });
 
-            console.log('chats', chats);
+            // console.log('chats', chats);
             return chats;
         }
         catch (error) {

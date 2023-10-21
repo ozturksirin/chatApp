@@ -13,7 +13,7 @@ const BottomBar = (props) => {
     const navigation = useNavigation();
 
     const goToContacts = () => {
-        navigation.navigate('Contacts')
+        navigation.navigate('Matchs')
     }
 
     const goToMessages = () => {
