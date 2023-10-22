@@ -15,6 +15,7 @@ const Contacts = (props) => {
     const currentUserData = auth().currentUser.uid;
 
 
+
     const getUser = async () => {
         try {
             const userRef = firestore().collection('users').where('authUserId', '!=', currentUserData);
@@ -79,9 +80,8 @@ const Contacts = (props) => {
 
     return (
         <View style={styles.container}>
+
             {/* Modal start */}
-
-
             <Modal
                 hardwareAccelerated={true}
                 animationType='slide'
@@ -91,7 +91,9 @@ const Contacts = (props) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={styles.centeredView}>
+                <Pressable style={styles.centeredView} onPress={() => {
+                    setModalVisible(!modalVisible);
+                }}>
                     <View style={styles.modalView}>
                         <Image source={selectedUser?.image ? { uri: selectedUser?.image } : User} style={styles.modalBigImg} />
                         <Text style={styles.modalText}>
@@ -100,14 +102,12 @@ const Contacts = (props) => {
                             }
                         </Text>
                         <Pressable style={styles.closeBtn}
-
                             onPress={
                                 () => { setModalVisible(!modalVisible); }
                             }>
-                            <Text style={styles.btnText}>Close</Text>
                         </Pressable>
                     </View>
-                </View>
+                </Pressable>
             </Modal>
             {/* Modal END */}
 

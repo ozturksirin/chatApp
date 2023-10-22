@@ -65,27 +65,4 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 16,
     },
-    closeBtn: {
-        color: '#FFFFFF',
-        fontFamily: 'Mulish',
-        fontSize: 16,
-        fontStyle: 'normal',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginTop: 16,
-        backgroundColor: '#375FFF',
-        padding: 10,
-        borderRadius: 10,
-        alignSelf: 'center',
-        width: 100
-    },
-    btnText: {
-        color: '#FFFFFF',
-        fontFamily: 'Mulish',
-        fontSize: 14,
-        fontStyle: 'normal',
-        fontWeight: '400',
-        textAlign: 'center',
-
-    },
 });
