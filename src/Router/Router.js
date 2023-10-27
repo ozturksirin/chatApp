@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styles } from '../Assets/Styles/routerStyle';
-import { Image, BackHandler, View, Text } from 'react-native';
+import { Image, BackHandler, View, Text, ToastAndroid } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Chat from '../Pages/Chat/Chat';
@@ -92,6 +92,28 @@ const HomeStackScreen = () => {
 
 const Router = () => {
     const isAuth = useSelector((state) => state.user.isAuth);
+    const [backButtonPressedOnce, setBackButtonPressedOnce] = useState(false);
+
+    useEffect(() => {
+        const backAction = () => {
+            if (backButtonPressedOnce) {
+                BackHandler.exitApp();
+            }
+            else {
+                setBackButtonPressedOnce(true);
+                setTimeout(() => {
+                    setBackButtonPressedOnce(false);
+                }, 3000);
+                ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+            }
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress', backAction,
+        );
+        return () => backHandler.remove();
+    }, [backButtonPressedOnce]);
+
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName='Splash'

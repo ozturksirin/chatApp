@@ -24,9 +24,7 @@ const Menu = (props) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
     const UID = auth().currentUser.uid;
-    useEffect(() => {
-        console.log('user', user);
-    }, []);
+
     const logOut = async () => {
         try {
             auth().signOut();

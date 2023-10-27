@@ -6,14 +6,15 @@ import SendM from '../../Assets/Images/icons/send.png'
 import { GiftedChat, Bubble } from 'react-native-gifted-chat'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
 const Chat = (props) => {
     const { } = props
     const { chatId, users } = props.route.params;
     const [messages, setMessages] = useState([])
     useEffect(() => {
-        console.log('chatId', chatId);
-        console.log('users', users);
+        // console.log('chatId', chatId);
+        // console.log('users', users);
     }, [])
     useEffect(() => {
         return firestore()
@@ -24,17 +25,81 @@ const Chat = (props) => {
             )
     }, [chatId])
     const onSend = (msg = []) => {
+        const updatedMessages = msg.map(message => {
+            return {
+                ...message,
+                gf_id: Math.random().toString(36).substring(7), // uniq create _id for gifted chat 
+                createdAt: new Date(),
+                user: {
+                    _id: auth().currentUser.uid, // sent userid
+                    // name: users?.firstName, // sent username
+                }
+            };
+        });
+
         firestore()
             .doc(`messages/${chatId}`)
             .set({
-                messages: GiftedChat.append(messages, msg),
-            }, { merge: true })
+                messages: GiftedChat.append(messages,),
+            }, { merge: true });
     }
+
+    const handleSendImage = () => {
+        launchImageLibrary(
+            {
+                selectionLimit: 1,
+                mediaType: 'photo',
+            },
+            (response) => {
+                if (!response.didCancel && !response.errorCode) {
+                    const imageUri = response.assets[0].uri;
+                    uploadImage(imageUri);
+                }
+            }
+        );
+    };
+
+    const uploadImage = async (uri) => {
+        const filename = uri.substring(uri.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        const storageRef = storage().ref(`chats/${filename}`);
+        const task = storageRef.putFile(uploadUri);
+
+        try {
+            await task;
+            const url = await storageRef.getDownloadURL();
+
+            const user = {
+                _id: auth().currentUser.uid,
+                name: users?.firstName,
+            };
+
+            const imageMessage = {
+                _id: Math.random().toString(36).substring(7),
+                createdAt: new Date(),
+                user: user,
+                image: url,
+            };
+
+            onSend([imageMessage]);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+    const lastMessage = messages[messages.length - 1];
+
+    console.log('messages', lastMessage);
+
 
     return (
         <>
             <View style={styles.container} >
                 <GiftedChat
+                    showAvatarForEveryMessage={true}
+                    showUserAvatar={false}
+                    renderAvatar={() => null}
                     messages={messages.map(x => ({
                         ...x,
                         createdAt: x.createdAt?.toDate()
@@ -69,9 +134,10 @@ const Chat = (props) => {
                     renderInputToolbar={(props) => (
                         <View style={styles.inputArea}>
                             <TouchableOpacity
+                                onPress={handleSendImage}
                                 {...props}
-                                style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 4 }}>
-                                <Image source={Plus} />
+                                style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 8 }}>
+                                <Image source={Plus} style={{ width: 28, resizeMode: 'contain' }} />
                             </TouchableOpacity>
                             <TextInput
                                 {...props}
@@ -92,12 +158,12 @@ const Chat = (props) => {
                                         props.onSend({ text: props.text.trim() }, true);
                                     }
                                 }}
-                                style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 4 }}>
+                                style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 6 }}>
                                 <Image
                                     source={SendM}
                                     style={{
-                                        width: 24,
-                                        height: 24,
+                                        width: 26,
+                                        height: 26,
                                         resizeMode: 'contain',
                                     }}
                                 />
