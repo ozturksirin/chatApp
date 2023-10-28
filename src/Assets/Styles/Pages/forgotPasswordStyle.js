@@ -1,21 +1,18 @@
 import { StyleSheet } from "react-native";
 
+
 export const styles = StyleSheet.create({
     container: {
+        paddingHorizontal: 6,
         backgroundColor: '#0F1828',
         flex: 1,
-        paddingHorizontal: 6
-    },
-    area: {
         justifyContent: 'center',
-        flex: 1,
     },
-    forgotPass: {
-        color: '#FFF',
-        alignSelf: 'center',
+    text: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
         marginTop: 10,
-        fontSize: 16,
-    }
-
-
-});
+    },
+})

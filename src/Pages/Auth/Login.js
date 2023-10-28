@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Alert, ActivityIndicator } from 'react-native'
+import { View, Alert, ActivityIndicator, Text, TouchableOpacity } from 'react-native'
 import InputModel from '../../Components/InputModel'
 import ButtonModel from '../../Components/ButtonModel'
 import { styles } from '../../Assets/Styles/Pages/loginStyle'
@@ -53,6 +53,12 @@ const Login = (props) => {
                     title={isLoading ? <ActivityIndicator size={'small'} color={'#FFF'} /> : 'Login'}
                     onPress={Login} subTitle={isLoading ? null : 'Register'} onPressSub={GoRegister}
                 />
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                    <Text style={styles.forgotPass}>
+                        Forgot Password?
+                    </Text>
+                </TouchableOpacity>
+                <View />
             </View>
         </View>
     )

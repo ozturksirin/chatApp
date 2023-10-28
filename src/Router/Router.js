@@ -21,6 +21,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Account from '../Pages/More/Account/Account';
+import ForgotPassword from '../Pages/Auth/ForgotPassword';
 const Tab = createBottomTabNavigator();
 
 const HomeStackScreen = () => {
@@ -135,8 +136,9 @@ const Router = () => {
                         <>
                             <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
                             <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
-                            <Stack.Screen name='Register' component={Register} />
-                            <Stack.Screen name='ProfileCreate' component={ProfileCreate} />
+                            <Stack.Screen name='Register' component={Register} options={{ title: 'Register' }} />
+                            <Stack.Screen name='ProfileCreate' component={ProfileCreate} options={{ title: 'Profile Create' }} />
+                            <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ title: 'Forgot Password' }} />
                         </>
                     ) :
                         (
