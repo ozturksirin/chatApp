@@ -24,24 +24,13 @@ const Chat = (props) => {
             }
             )
     }, [chatId])
-    const onSend = (msg = []) => {
-        const updatedMessages = msg.map(message => {
-            return {
-                ...message,
-                gf_id: Math.random().toString(36).substring(7), // uniq create _id for gifted chat 
-                createdAt: new Date(),
-                user: {
-                    _id: auth().currentUser.uid, // sent userid
-                    // name: users?.firstName, // sent username
-                }
-            };
-        });
 
+    const onSend = (msg = []) => {
         firestore()
             .doc(`messages/${chatId}`)
             .set({
-                messages: GiftedChat.append(messages,),
-            }, { merge: true });
+                messages: GiftedChat.append(messages, msg),
+            }, { merge: true })
     }
 
     const handleSendImage = () => {
@@ -88,9 +77,9 @@ const Chat = (props) => {
         }
     };
 
-    const lastMessage = messages[messages.length - 1];
+    // const lastMessage = messages[messages.length - 1];
 
-    console.log('messages', lastMessage);
+    // console.log('messages', lastMessage);
 
 
     return (
