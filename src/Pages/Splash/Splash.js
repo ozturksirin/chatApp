@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
-import {styles} from '../../Assets/Styles/Pages/splashStyle';
-import {View, Image, Text} from 'react-native';
+import React, { useEffect } from 'react';
+import { styles } from '../../Assets/Styles/Pages/splashStyle';
+import { View, Image, Text } from 'react-native';
 import splash from '../../Assets/Images/splash.png';
-import {useDispatch} from 'react-redux';
-import {save, authCheck} from '../../Redux/Slices/authSlice';
+import { useDispatch } from 'react-redux';
+import { save, authCheck } from '../../Redux/Slices/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splash = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const dispatch = useDispatch();
 
   const getUser = async () => {
@@ -18,7 +18,7 @@ const Splash = props => {
         dispatch(save(user));
         dispatch(authCheck(true));
         setTimeout(() => {
-          navigation.replace('Matchs');
+          navigation.replace('Home');
         }, 3000);
       } else {
         dispatch(save(null));

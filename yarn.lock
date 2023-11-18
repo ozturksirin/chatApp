@@ -1724,6 +1724,11 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
+"@react-native-community/netinfo@^11.1.0":
+  version "11.1.0"
+  resolved "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-11.1.0.tgz"
+  integrity sha512-pIbCuqgrY7SkngAcjUs9fMzNh1h4soQMVw1IeGp1HN5//wox3fUVOuvyIubTscUbdLFKiltJAiuQek7Nhx1bqA==
+
 "@react-native-firebase/app@^18.3.0", "@react-native-firebase/app@18.3.0":
   version "18.3.0"
   resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-18.3.0.tgz"
